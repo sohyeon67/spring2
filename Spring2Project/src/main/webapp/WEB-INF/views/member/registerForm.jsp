@@ -134,7 +134,7 @@
 	
 	<p>3) 폼 비밀번호 필드 요소값을 자바빈즈 매개변수로 처리한다.</p>
 	<form action="/registerPassword" method="post">
-		userId : <input type="password" name="password"/><br/>
+		password : <input type="password" name="password"/><br/>
 		<input type="submit" value="전송"/><br/>
 	</form>
 	
