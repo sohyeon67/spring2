@@ -14,11 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 public class RedirectAttributeMemberController {
 	
 	/*
-	 * 		4. RedirectAttribute 타입
+	 * 		4. RedirectAttributes 타입
 	 * 
-	 * 			- RedirectAttribute는 일회성 데이터를 전달하는 용도로 사용한다.
+	 * 			- RedirectAttributes는 일회성 데이터를 전달하는 용도로 사용한다.
 	 */
-	// RedirectAttribute 타입 테스트 페이지
+	// RedirectAttributes 타입 테스트 페이지
 	@RequestMapping(value="/registerForm", method = RequestMethod.GET)
 	public String registerForm() {
 		log.info("registerForm() 실행...!");

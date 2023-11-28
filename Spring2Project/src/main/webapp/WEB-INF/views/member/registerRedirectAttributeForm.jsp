@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h3>RedirectAttribute 타입</h3>
+	<h3>RedirectAttributes 타입</h3>
 	<form action="/redirectattribute/register" method="post">
 		userId : <input type="text" name="userId"/><br/>
 		password : <input type="text" name="password"/><br/>
