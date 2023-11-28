@@ -36,13 +36,13 @@
 	
 	<p>cardList</p>
 	<c:forEach items="${user.cardList }" var="card">
-		<c:out value="${card.no } ${card.validMonth }"/>
+		<c:out value="${card.no } ${card.validMonth }"/><br/>
 	</c:forEach>
 	
 	<p>carList</p>
 	<c:forEach items="${user.carList }" var="car">
 		<c:out value="${car }"/>
-	</c:forEach>
+	</c:forEach><br/>
 	introduction : ${user.introduction }<br/>
 	dateOfBirth : ${user.dateOfBirth }<br/>
 	
