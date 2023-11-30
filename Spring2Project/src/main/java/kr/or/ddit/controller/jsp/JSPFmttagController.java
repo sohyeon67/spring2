@@ -23,7 +23,7 @@ public class JSPFmttagController {
 	 * 
 	 * 				속성		|	타입				|	설명
 	 * 			──────────────────────────────────────────────────────────
-	 * 			value		| String of Number	| 서식에 맞춰 출력할 숫자
+	 * 			value		| String or Number	| 서식에 맞춰 출력할 숫자
 	 * 			type		| String			| 어떤 서식으로 출력할지를 정한다.
 	 * 			pattern		| String			| 직접 숫자를 출력할 서식을 지정한다.
 	 * 			var			| String			| 포맷팅한 결과를 지정할 변수이름
