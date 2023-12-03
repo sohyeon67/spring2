@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -66,6 +66,13 @@
 </style>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<c:if test="${not empty message }">
+<script type="text/javascript">
+alert("${message}");
+<c:remove var="message" scope="request"/>
+<c:remove var="message" scope="session"/>
+</script>
+</c:if>
 <body>
 	<header>
 		<div class="collapse bg-dark" id="navbarHeader">
@@ -86,17 +93,25 @@
 			<div class="row">
 				<div class="col-md-12">
 					<div class="card">
-						<div class="card-header">제목</div>
-						<div class="card-body">작성자 작성일 조회수</div>
-						<div class="card-body">내용</div>
+						<div class="card-header">${tagBoardVO.boTitle }</div>
+						<div class="card-body">${tagBoardVO.boWriter } ${tagBoardVO.boDate } ${tagBoardVO.boHit }</div>
+						<div class="card-body">${tagBoardVO.boContent }</div>
 						<div class="card-body">
-							<span class="badge bg-success">태그들</span>
+							<c:if test="${not empty tagBoardVO.tagList }">
+								<c:forEach items="${tagBoardVO.tagList }" var="tag">
+									<span class="badge bg-success">#${tag.tagName }</span>
+								</c:forEach>
+							</c:if>
 						</div>
 						<div class="card-footer">
 							<button type="button" class="btn btn-warning" id="modifyBtn">수정</button>
 							<button type="button" class="btn btn-danger" id="delBtn">삭제</button>
 							<button type="button" class="btn btn-info" id="listBtn">목록</button>
 						</div>
+						<!-- 수정, 삭제 시 넘길 게시글 번호 -->
+						<form action="/board/tag/delete.do" method="post" id="delForm">
+							<input type="hidden" name="boNo" value="${tagBoardVO.boNo }"/>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -104,4 +119,31 @@
 	</main>
 	<script src="${pageContext.request.contextPath }/resources/assets/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+<script type="text/javascript">
+$(function() {
+	var delForm = $("#delForm");
+	var modifyBtn = $("#modifyBtn");
+	var delBtn = $("#delBtn");
+	var listBtn = $("#listBtn");
+	
+	// 목록 버튼 클릭 시, 목록 페이지로 이동
+	listBtn.on("click", function() {
+		location.href = "/board/tag/list.do";
+	});
+	
+	// 수정 버튼 클릭 시, 수정 페이지로 이동
+	modifyBtn.on("click", function() {
+		delForm.attr("action", "/board/tag/update.do");
+		delForm.attr("method", "get");
+		delForm.submit();
+	});
+	
+	// 삭제 버튼 클릭 시, confirm 메시지 출력 후 삭제
+	delBtn.on("click", function() {
+		if(confirm("정말로 삭제하시겠습니까?")) {
+			delForm.submit();
+		}
+	});
+});
+</script>
 </html>

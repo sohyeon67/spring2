@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.or.ddit.mapper.ITagMapper">
+
+	<insert id="createBoard" parameterType="tagBoardVO" useGeneratedKeys="true">
+		<selectKey keyProperty="boNo" resultType="int" order="BEFORE">
+			select seq_tagboard.nextval from dual
+		</selectKey>
+		insert into tagboard(
+			bo_no, bo_title, bo_content, bo_writer, bo_date, bo_hit
+		) values (
+			#{boNo}, #{boTitle}, #{boContent}, #{boWriter}, sysdate, 0
+		)
+	</insert>
+	
+	<insert id="createTag" parameterType="tagVO">
+		insert into tag(
+			bo_no, tag
+		) values (
+			#{boNo}, #{tagName}
+		)
+	</insert>
+	
+	<update id="incrementHit" parameterType="int">
+		update tagboard
+		set
+			bo_hit = bo_hit + 1
+		where bo_no = #{boNo}
+	</update>
+	
+	<select id="selectBoard" parameterType="int" resultType="tagBoardVO">
+		select
+			bo_no, bo_title, bo_content, bo_writer, bo_date, bo_hit
+		from tagboard
+		where bo_no = #{boNo}
+	</select>
+	
+	<select id="selectTag" parameterType="int" resultType="tagVO">
+		select
+			bo_no, tag tag_name
+		from tag
+		where bo_no = #{boNo}
+	</select>
+	
+	<delete id="deleteBoard" parameterType="int">
+		delete from tagboard where bo_no = #{boNo}
+	</delete>
+	
+	<delete id="deleteTag" parameterType="int">
+		delete from tag where bo_no = #{boNo}
+	</delete>
+	
+	<update id="updateBoard" parameterType="tagBoardVO">
+		update tagboard
+		set
+			bo_title = #{boTitle},
+			bo_content = #{boContent}
+		where bo_no = #{boNo}
+	</update>
+	
+	<sql id="boardSearch">
+		<if test="searchType != null and searchType == 'title'">
+			and (bo_title like '%'||#{searchWord}||'%')
+		</if>
+		<if test="searchType != null and searchType == 'writer'">
+			and (bo_writer like '%'||#{searchWord}||'%')
+		</if>
+		<if test="searchType != null and searchType == 'both'">
+			and ((bo_title like '%'||#{searchWord}||'%') or (bo_writer like '%'||#{searchWord}||'%'))
+		</if>
+	</sql>
+	
+	<select id="selectBoardList" resultType="tagBoardVO">
+		select
+			bo_no, bo_title, bo_content, bo_writer, bo_date, bo_hit
+		from tagboard
+		where 1=1
+		<include refid="boardSearch"/>
+		order by bo_no desc
+	</select>
+	
+
+</mapper>

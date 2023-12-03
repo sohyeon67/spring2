@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -66,6 +66,13 @@
 </style>
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+<c:if test="${not empty message }">
+<script type="text/javascript">
+alert("${message}");
+<c:remove var="message" scope="request"/>
+<c:remove var="message" scope="session"/>
+</script>
+</c:if>
 <body>
 	<header>
 		<div class="collapse bg-dark" id="navbarHeader">
@@ -92,14 +99,15 @@
 								<div class="row">
 									<div class="col-md-4">
 										<select class="form-select" name="searchType">
-											<option value="title" selected>제목</option>
-											<option value="writer">작성자</option>
-											<option value="both">제목+작성자</option>
+											<option value="title" <c:if test="${searchType == 'title' }">selected</c:if>>제목</option>
+											<option value="writer" <c:if test="${searchType == 'writer' }">selected</c:if>>작성자</option>
+											<option value="both" <c:if test="${searchType == 'both' }">selected</c:if>>제목+작성자</option>
 										</select>
 									</div>
 									<div class="col-md-5">
 										<label for="inputPassword2" class="visually-hidden">키워드</label>
-										<input type="text" class="form-control" id="inputPassword2" name="searchWord" placeholder="검색 키워드">
+										<input type="text" class="form-control" id="inputPassword2" name="searchWord" 
+											placeholder="검색 키워드" value="${searchWord }">
 									</div>
 									<div class="col-md-3">
 										<button type="submit" class="btn btn-dark">검색하기</button>
@@ -119,16 +127,26 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td colspan="5">조회하신 게시글이 존재하지 않습니다.</td>
-							</tr>
-							<tr>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-							</tr>
+							<c:choose>
+								<c:when test="${empty boardList }">
+									<tr>
+										<td colspan="5">조회하신 게시글이 존재하지 않습니다.</td>
+									</tr>
+								</c:when>
+								<c:otherwise>
+									<c:forEach items="${boardList }" var="board">
+										<tr>
+											<td>${board.boNo }</td>
+											<td>
+												<a href="/board/tag/detail.do?boNo=${board.boNo }">${board.boTitle }</a>
+											</td>
+											<td>${board.boWriter }</td>
+											<td>${board.boDate }</td>
+											<td>${board.boHit }</td>
+										</tr>
+									</c:forEach>
+								</c:otherwise>
+							</c:choose>
 						</tbody>
 					</table>
 					<button type="button" class="btn btn-primary" id="registerBtn">등록</button>
@@ -138,4 +156,13 @@
 	</main>
 	<script src="${pageContext.request.contextPath }/resources/assets/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+<script type="text/javascript">
+$(function() {
+	var registerBtn = $("#registerBtn");
+	
+	registerBtn.on("click", function() {
+		location.href = "/board/tag/form.do";
+	});
+});
+</script>
 </html>
