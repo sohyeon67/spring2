@@ -58,6 +58,8 @@ public class TagServiceImpl implements ITagService {
 	@Override
 	public TagBoardVO selectTagBoard(int boNo) {
 		mapper.incrementHit(boNo);	// 조회수 증가
+		
+		// resultMap을 사용하지 않을 시
 		TagBoardVO tagBoardVO = mapper.selectBoard(boNo);	// 게시글 정보 가져오기
 		List<TagVO> tagList = mapper.selectTag(boNo);		// 해당 게시글의 태그 정보 가져오기 (여러 행이 될 수 있음)
 		if(tagList != null && tagList.size() > 0) {
@@ -70,6 +72,19 @@ public class TagServiceImpl implements ITagService {
 			tagBoardVO.setTagList(tagList);					// tagBoardVO에 다 세팅해서 넘겨주기
 		}
 		
+		/*
+		// resultMap 사용 시
+		TagBoardVO tagBoardVO = mapper.read(boNo);
+		List<TagVO> tagList = tagBoardVO.getTagList();	// resultMap을 사용했을 경우 tag 테이블에 값이 없어도 boNo에 값이 있고 tagName은 null이 담겨 tagList가 null이 아님
+		if(tagList != null && tagList.size() > 0) {
+			String tags = "";
+			for(int i = 0; i < tagList.size(); i++) {
+				String tag = tagList.get(i).getTagName();
+				tags += tag + " ";	// 끝에 띄어쓰기 있어도 어차피 split으로 무시된다.
+			}
+			tagBoardVO.setTag(tags);
+		}
+		*/
 		return tagBoardVO;
 	}
 

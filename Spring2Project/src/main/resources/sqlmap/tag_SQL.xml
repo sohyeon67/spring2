@@ -30,6 +30,32 @@
 		where bo_no = #{boNo}
 	</update>
 	
+	<resultMap type="tagBoardVO" id="boardMap">
+		<id property="boNo" column="bo_no"/>
+		<result property="boNo" column="bo_no"/>
+		<result property="boTitle" column="bo_title"/>
+		<result property="boContent" column="bo_content"/>
+		<result property="boWriter" column="bo_writer"/>
+		<result property="boDate" column="bo_date"/>
+		<result property="boHit" column="bo_hit"/>
+		<collection property="tagList" resultMap="tagMap"/>
+	</resultMap>
+	
+	<resultMap type="tagVO" id="tagMap">
+		<result property="boNo" column="bo_no"/>
+		<result property="tagName" column="tag"/>
+	</resultMap>
+	
+	<!-- resultMap 사용시 -->
+	<select id="read" parameterType="int" resultMap="boardMap">
+		select
+			b.bo_no, bo_title, bo_content, bo_writer, bo_date, bo_hit,
+			tag
+		from tagboard b left outer join tag t on(b.bo_no = t.bo_no)
+		where b.bo_no = #{boNo}
+	</select>
+	
+	<!-- resultMap 사용하지 않을 시 -->
 	<select id="selectBoard" parameterType="int" resultType="tagBoardVO">
 		select
 			bo_no, bo_title, bo_content, bo_writer, bo_date, bo_hit

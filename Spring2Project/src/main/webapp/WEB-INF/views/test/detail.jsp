@@ -99,6 +99,8 @@ alert("${message}");
 						<div class="card-body">
 							<c:if test="${not empty tagBoardVO.tagList }">
 								<c:forEach items="${tagBoardVO.tagList }" var="tag">
+									<!-- resultMap 사용시 밑에 조건 필요 -->
+									<%-- <c:if test="${not empty tag.tagName }"></c:if> --%>
 									<span class="badge bg-success">#${tag.tagName }</span>
 								</c:forEach>
 							</c:if>

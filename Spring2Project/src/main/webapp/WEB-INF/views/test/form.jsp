@@ -112,6 +112,8 @@ alert("${message}");
 							</div>
 							<div class="input-group input-group-lg">
 								<span class="input-group-text" id="inputGroup-sizing-lg">태그</span>
+								<!-- resultMap 사용시 -->
+								<%-- <input type="text" class="form-control" name="tag" <c:if test="${not empty tag }">value="${tagBoardVO.tag }"</c:if>/> --%>
 								<input type="text" class="form-control" name="tag" value="${tagBoardVO.tag }"/>
 							</div>
 						</div>
