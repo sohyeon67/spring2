@@ -42,7 +42,7 @@ public class JSPFormCheckboxesTagController {
 		log.info("registerForm02() 실행...!");
 		
 		List<CodeLabelValue> hobbyCodeList = new ArrayList<CodeLabelValue>();
-		hobbyCodeList.add(new CodeLabelValue("01", "Sprots"));
+		hobbyCodeList.add(new CodeLabelValue("01", "Sports"));
 		hobbyCodeList.add(new CodeLabelValue("02", "Music"));
 		hobbyCodeList.add(new CodeLabelValue("03", "Movie"));
 		
