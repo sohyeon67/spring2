@@ -50,6 +50,15 @@
 		)
 	</insert>
 	
+	<!-- noticemember 파일처리 -->
+	<insert id="insertNoticeFile" parameterType="noticeFileVO">
+		insert into noticefile(
+			file_no, bo_no, file_name, file_size, file_fancysize, file_mime, file_savepath, file_downcount
+		) values (
+			seq_noticefile.nextval, #{boNo}, #{fileName}, #{fileSize}, #{fileFancysize}, #{fileMime}, #{fileSavepath}, 0
+		)
+	</insert>
+	
 	<update id="incrementHit" parameterType="int">
 		update notice
 		set
@@ -76,5 +85,7 @@
 		delete from notice
 		where bo_no = #{boNo}
 	</delete>
+	
+	
 
 </mapper>

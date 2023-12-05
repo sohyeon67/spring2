@@ -28,7 +28,7 @@
 					<h3 class="card-title">공지사항 ${name }</h3>
 					<div class="card-tools"></div>
 				</div>
-				<form action="/notice/insert.do" method="post" id="noticeForm">
+				<form action="/notice/insert.do" method="post" id="noticeForm" enctype="multipart/form-data">
 					<c:if test="${status eq 'u' }">
 						<input type="hidden" name="boNo" value="${notice.boNo }"/>
 					</c:if>
@@ -42,14 +42,13 @@
 							<label for="boContent">내용을 입력해주세요</label>
 							<textarea id="boContent" name="boContent" class="form-control" rows="14">${notice.boContent }</textarea>
 						</div>
-						<!-- <div class="form-group">
+						<div class="form-group">
 							<div class="custom-file">
 	
-								<input type="file" class="custom-file-input" id="customFile"
-									multiple="multiple"> <label class="custom-file-label"
-									for="customFile">파일을 선택해주세요</label>
+								<input type="file" class="custom-file-input" id="boFile" name="boFile" multiple="multiple">
+								<label class="custom-file-label" for="boFile">파일을 선택해주세요</label>
 							</div>
-						</div> -->
+						</div>
 					</div>
 				</form>
 				<div class="card-footer bg-white">

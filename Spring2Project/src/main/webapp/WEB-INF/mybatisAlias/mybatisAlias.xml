@@ -27,5 +27,8 @@
 
 		<typeAlias type="kr.or.ddit.vo.test.TagBoardVO" alias="tagBoardVO"/>
 		<typeAlias type="kr.or.ddit.vo.test.TagVO" alias="tagVO"/>
+		
+		<typeAlias type="kr.or.ddit.vo.crud.NoticeMemberVO" alias="noticeMemberVO"/>
+		<typeAlias type="kr.or.ddit.vo.crud.NoticeFileVO" alias="noticeFileVO"/>
 	</typeAliases>
 </configuration>

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,6 +14,13 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/dist/css/adminlte.min.css">
 <script src="${pageContext.request.contextPath }/resources/plugins/jquery/jquery.min.js"></script>
 </head>
+<c:if test="${not empty message }">
+<script type="text/javascript">
+alert("${message}");
+<c:remove var="message" scope="request"/>
+<c:remove var="message" scope="session"/>
+</script>
+</c:if>
 <body class="hold-transition ${bodyText }">
 	<!-- content 영역 -->
 	<tiles:insertAttribute name="content"/>
