@@ -73,5 +73,72 @@
 $(function(){
 	// 로그인 페이지를 요청 시, background에 이미지 삽입
 	$("body").css("background-image", "url('${pageContext.request.contextPath}/resources/dist/img/background04.jpg')").css("background-size", "cover");
+	
+	var idFindBtn = $("#idFindBtn");
+	var pwFindBtn = $("#pwFindBtn");
+	
+	idFindBtn.on("click", function() {
+		var email = $("#memEmail").val();
+		var name = $("#memName").val();
+		
+		if(email == null || email == "") {
+			alert("이메일을 입력해주세요!");
+			return false;
+		}
+		if(name == null || name == "") {
+			alert("이름을 입력해주세요!");
+			return false;
+		}
+		
+		var data = {
+			memEmail: email,
+			memName: name
+		}
+		
+		$.ajax({
+			type: "post",
+			url: "/notice/findId.do",
+			data: JSON.stringify(data),
+			contentType: "application/json;charset=utf-8",
+			success: function(res) {
+				$("#id").text(res);
+			}
+		});
+	});
+	
+	pwFindBtn.on("click", function() {
+		var id = $("#memId").val();
+		var email = $("#memEmail2").val();
+		var name = $("#memName2").val();
+		
+		if(id == null || id == "") {
+			alert("아이디를 입력해주세요!");
+			return false;
+		}
+		if(email == null || email == "") {
+			alert("이메일을 입력해주세요!");
+			return false;
+		}
+		if(name == null || name == "") {
+			alert("이름을 입력해주세요!");
+			return false;
+		}
+		
+		var data = {
+			memId: id,
+			memEmail: email,
+			memName: name
+		}
+		
+		$.ajax({
+			type: "post",
+			url: "/notice/findPw.do",
+			data: JSON.stringify(data),
+			contentType: "application/json;charset=utf-8",
+			success: function(res) {
+				$("#password").text(res);
+			}
+		});
+	});
 });
 </script>

@@ -141,4 +141,24 @@ public class NoticeLoginController {
 		}
 		return goPage;
 	}
+	
+	@RequestMapping(value="/forget.do", method = RequestMethod.GET)
+	public String loginForgetIdAndPw(Model model) {
+		model.addAttribute("bodyText", "login-page");
+		return "conn/forget";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/findId.do", method = RequestMethod.POST)
+	public String findId(@RequestBody NoticeMemberVO memberVO) {
+		String memId = noticeService.findId(memberVO);
+		return memId;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="/findPw.do", method = RequestMethod.POST)
+	public String findPw(@RequestBody NoticeMemberVO memberVO) {
+		String memPw = noticeService.findPw(memberVO);
+		return memPw;
+	}
 }

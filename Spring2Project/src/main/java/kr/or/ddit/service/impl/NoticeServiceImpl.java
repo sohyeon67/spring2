@@ -2,20 +2,20 @@ package kr.or.ddit.service.impl;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.or.ddit.ServiceResult;
+import kr.or.ddit.controller.crud.notice.TelegramSendController;
 import kr.or.ddit.mapper.ILoginMapper;
 import kr.or.ddit.mapper.INoticeMapper;
+import kr.or.ddit.mapper.IProfileMapper;
 import kr.or.ddit.service.INoticeService;
 import kr.or.ddit.vo.crud.NoticeFileVO;
 import kr.or.ddit.vo.crud.NoticeMemberVO;
@@ -30,6 +30,11 @@ public class NoticeServiceImpl implements INoticeService {
 	
 	@Inject
 	private ILoginMapper loginMapper;
+	
+	@Inject
+	private IProfileMapper profileMapper;
+	
+	private TelegramSendController tst = new TelegramSendController();
 
 	@Override
 	public int selectNoticeCount(PaginationInfoVO<NoticeVO> pagingVO) {
@@ -55,6 +60,13 @@ public class NoticeServiceImpl implements INoticeService {
 				e.printStackTrace();
 			}
 			
+			// Telegram Bot API를 이용한 실시간 메세지 처리
+			try {
+				tst.sendGet("홍길동", noticeVO.getBoTitle());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			result = ServiceResult.OK;
 		} else {
 			result = ServiceResult.FAILED;
@@ -69,10 +81,32 @@ public class NoticeServiceImpl implements INoticeService {
 	}
 
 	@Override
-	public ServiceResult updateNotice(NoticeVO noticeVO) {
+	public ServiceResult updateNotice(HttpServletRequest req, NoticeVO noticeVO) {
 		ServiceResult result = null;
-		int status = noticeMapper.updateNotice(noticeVO);
-		if(status > 0) {	
+		int status = noticeMapper.updateNotice(noticeVO);	// 게시글 수정
+		if(status > 0) {	// 게시글 수정 완료
+			// 게시글 정보에서 파일 목록 가져오기
+			List<NoticeFileVO> noticeFileList = noticeVO.getNoticeFileList();
+			try {
+				// 공지사항 파일 업로드
+				noticeFileUpload(noticeFileList, noticeVO.getBoNo(), req);
+				
+				// 기존에 등록되어 있는 파일 목록들 중, 수정하기 위해서 X버튼을 눌러 삭제 처리로 넘겨준 파일 번호들
+				Integer[] delNoticeNo = noticeVO.getDelNoticeNo();
+				if(delNoticeNo != null) {
+					for(int i = 0; i < delNoticeNo.length; i++) {
+						// 삭제할 파일 번호 목록들 중, 파일 번호에 해당하는 공지사항 파일정보를 가져온다.
+						NoticeFileVO noticeFileVO = noticeMapper.selectNoticeFile(delNoticeNo[i]);
+						noticeMapper.deleteNoticeFile(delNoticeNo[i]);	// 파일 번호에 해당하는 파일 데이터를 삭제
+						File file = new File(noticeFileVO.getFileSavepath());
+						file.delete();	// 기존 파일이 업로드 되어 있던 경로에 파일 삭제
+					}
+				}
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 			result = ServiceResult.OK;
 		} else {
 			result = ServiceResult.FAILED;
@@ -81,15 +115,51 @@ public class NoticeServiceImpl implements INoticeService {
 	}
 
 	@Override
-	public ServiceResult deleteNotice(int boNo) {
+	public ServiceResult deleteNotice(HttpServletRequest req, int boNo) {
 		ServiceResult result = null;
-		int status = noticeMapper.deleteNotice(boNo);
+		
+		// 공지사항 파일 데이터를 삭제하기 위한 준비(파일 적용시)
+		NoticeVO noticeVO = noticeMapper.selectNotice(boNo);	// 게시글 번호에 해당하는 공지사항 게시글 정보 가져오기
+		noticeMapper.deleteNoticeFileByBoNo(boNo);		// 게시글 번호에 해당하는 파일 데이터 삭제
+		
+		int status = noticeMapper.deleteNotice(boNo);	// 일반적인 게시글 삭제
 		if(status > 0) {
+			List<NoticeFileVO> noticeFileList = noticeVO.getNoticeFileList();
+			if(noticeFileList != null && noticeFileList.size() > 0) {
+				// D:\99_Class.....\workspace\.metadata\.plugins.....\Project명\resources\notice\boNo
+				// 2or8u238r23oi23e23ep23e.jpg
+				// '/'기준으로 잘라준다.
+				String[] filePath = noticeFileList.get(0).getFileSavepath().split("/");
+				
+				String path = filePath[0];
+				deleteFolder(req, path);
+			}
+			
 			result = ServiceResult.OK;
 		} else {
 			result = ServiceResult.FAILED;
 		}
 		return result;
+	}
+
+	private void deleteFolder(HttpServletRequest req, String path) {
+		// UUID+원본파일명 전 폴더경로를 folder 파일객체로 잡는다.
+		File folder = new File(path);
+		
+		if(folder.exists()) {	// 경로가 존재한다면
+			File[] folderList = folder.listFiles();	// 폴더 안에 있는 파일들의 목록을 가져온다.
+			
+			for(int i = 0; i < folderList.length; i++) {
+				if(folderList[i].isFile()) {	// 폴더 안에 있는 것이 파일일때
+					// 폴더 안에 파일을 차례대로 삭제
+					folderList[i].delete();
+				} else {
+					// 폴더 안에 있는 것이 폴더일때 재귀함수 호출(폴더 안으로 들어가서 재처리할 수 있도록)
+					deleteFolder(req, folderList[i].getPath());
+				}
+			}
+			folder.delete();	// 폴더 삭제
+		}
 	}
 
 	// noticemember --------------------------------------------------
@@ -190,5 +260,67 @@ public class NoticeServiceImpl implements INoticeService {
 			}
 		}
 	}
+
+	@Override
+	public NoticeFileVO noticeDownload(int fileNo) {
+		NoticeFileVO noticeFileVO = noticeMapper.noticeDownload(fileNo);
+		if(noticeFileVO == null) {
+			throw new RuntimeException();
+		}
+		
+		noticeMapper.incrementNoticeDouncount(fileNo);	// 다운로드 횟수 증가
+		return noticeFileVO;
+	}
+
+	@Override
+	public NoticeMemberVO selectMember(String memId) {
+		return profileMapper.selectMember(memId);
+	}
+
+	@Override
+	public ServiceResult profileUpdate(HttpServletRequest req, NoticeMemberVO memberVO) {
+		ServiceResult result = null;
+		
+		// 프로필 이미지를 업로드 하기 위한 서버 경로(/resources/profile)
+		String uploadPath = req.getServletContext().getRealPath("/resources/profile");
+		File file = new File(uploadPath);
+		if(!file.exists()) {
+			file.mkdirs();
+		}
+		String profileImg = "";
+		try {
+			MultipartFile proFileImgFile = memberVO.getImgFile();
+			if(proFileImgFile.getOriginalFilename() != null && !proFileImgFile.getOriginalFilename().equals("")) {
+				String fileName = UUID.randomUUID().toString();
+				fileName += "_" + proFileImgFile.getOriginalFilename();
+				uploadPath += "/" + fileName;
+				proFileImgFile.transferTo(new File(uploadPath));
+				profileImg = "/resources/profile/" + fileName;
+			}
+			memberVO.setMemProfileImg(profileImg);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		int status = profileMapper.profileUpdate(memberVO);
+		if(status > 0) {	// 수정 성공
+			result = ServiceResult.OK;
+		} else {
+			result = ServiceResult.FAILED;
+		}
+		return result;
+	}
+
+	@Override
+	public String findId(NoticeMemberVO memberVO) {
+		return noticeMapper.findId(memberVO);
+	}
+
+	@Override
+	public String findPw(NoticeMemberVO memberVO) {
+		return noticeMapper.findPw(memberVO);
+	}
+
+	
 
 }

@@ -3,6 +3,7 @@ package kr.or.ddit.mapper;
 import java.util.List;
 
 import kr.or.ddit.vo.crud.NoticeFileVO;
+import kr.or.ddit.vo.crud.NoticeMemberVO;
 import kr.or.ddit.vo.crud.NoticeVO;
 import kr.or.ddit.vo.crud.PaginationInfoVO;
 
@@ -16,5 +17,12 @@ public interface INoticeMapper {
 	public int updateNotice(NoticeVO noticeVO);
 	public int deleteNotice(int boNo);
 	public void insertNoticeFile(NoticeFileVO noticeFileVO);
+	public NoticeFileVO noticeDownload(int fileNo);
+	public void incrementNoticeDouncount(int fileNo);
+	public NoticeFileVO selectNoticeFile(Integer integer);
+	public void deleteNoticeFile(Integer integer);
+	public void deleteNoticeFileByBoNo(int boNo);
+	public String findId(NoticeMemberVO memberVO);
+	public String findPw(NoticeMemberVO memberVO);
 
 }

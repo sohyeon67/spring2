@@ -1,6 +1,7 @@
 package kr.or.ddit.controller.crud.notice;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,10 +31,12 @@ public class NoticeModifyController {
 	}
 	
 	@RequestMapping(value="/update.do", method = RequestMethod.POST)
-	public String noticeUpdate(NoticeVO noticeVO, Model model, RedirectAttributes ra) {
+	public String noticeUpdate(
+			HttpServletRequest req,
+			NoticeVO noticeVO, Model model, RedirectAttributes ra) {
 		String goPage = "";
 		
-		ServiceResult result = noticeService.updateNotice(noticeVO);
+		ServiceResult result = noticeService.updateNotice(req, noticeVO);
 		if(result.equals(ServiceResult.OK)) {	// 수정 성공
 			goPage = "redirect:/notice/detail.do?boNo="+noticeVO.getBoNo();
 			ra.addFlashAttribute("message", "게시글 수정이 완료되었습니다!");
@@ -48,10 +51,12 @@ public class NoticeModifyController {
 	}
 	
 	@RequestMapping(value="/delete.do", method = RequestMethod.POST)
-	public String noticeDelete(int boNo, Model model, RedirectAttributes ra) {
+	public String noticeDelete(
+			HttpServletRequest req,
+			int boNo, Model model, RedirectAttributes ra) {
 		String goPage = "";
 		
-		ServiceResult result = noticeService.deleteNotice(boNo);
+		ServiceResult result = noticeService.deleteNotice(req, boNo);
 		if(result.equals(ServiceResult.OK)) { // 삭제 성공
 			goPage = "redirect:/notice/list.do";
 			ra.addFlashAttribute("message", "게시글 삭제가 완료되었습니다!");
