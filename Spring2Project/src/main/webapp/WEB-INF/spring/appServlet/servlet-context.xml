@@ -37,7 +37,7 @@
 	</beans:bean>
 	<!-- Tiles 설정을 위한 Bean 등록 끝 -->
 	
-	<context:component-scan base-package="kr.or.ddit" />
+	<context:component-scan base-package="kr.or.ddit.controller" />
 	
 	<!-- 
 		서블릿 표준용 MultipartResolver를 스프링 빈으로 정의

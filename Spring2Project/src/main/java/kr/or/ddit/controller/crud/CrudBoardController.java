@@ -1,9 +1,12 @@
 package kr.or.ddit.controller.crud;
 
+import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.springframework.aop.support.AopUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,12 @@ public class CrudBoardController {
 	
 	@Inject
 	private IBoardService service;
+	
+	@PostConstruct
+	public void init() {
+		log.info("aopProxy 상태(interface 기반) : {}", AopUtils.isAopProxy(service));
+		log.info("aopProxy 상태(클래스 상속 기반) {}", AopUtils.isCglibProxy(service));
+	}
 
 	@RequestMapping(value="/register", method = RequestMethod.GET)
 	public String crudRegisterForm() {
@@ -29,7 +38,7 @@ public class CrudBoardController {
 	}
 	
 	@RequestMapping(value="/register", method = RequestMethod.POST)
-	public String crudRegister(Board board, Model model) {
+	public String crudRegister(Board board, Model model) throws IOException {
 		log.info("crudRegister() 실행...!");
 		
 		service.register(board);
