@@ -9,7 +9,7 @@ public interface IBoardService {
 
 	public void register(Board board) throws IOException;
 	public List<Board> list();
-	public Board read(int boardNo);
+	public Board read(int boardNo) throws Exception;
 	public void modify(Board board);
 	public void remove(int boardNo);
 	public List<Board> search(Board board);
