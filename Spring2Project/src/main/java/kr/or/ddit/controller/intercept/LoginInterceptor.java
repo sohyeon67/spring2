@@ -43,9 +43,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		HandlerMethod method = (HandlerMethod) handler;
 		Method methodObj = method.getMethod();
 		
-		// kr.or.ddit.controller.login.LoginController@312r
+		// kr.or.ddit.controller.intercept.login.LoginController@312r
 		log.info("Bean : " + method.getBean());
-		// public java.lang.String kr.or.ddit.controller.login.LoginController.loginForm()
+		// public java.lang.String kr.or.ddit.controller.intercept.login.LoginController.loginForm()
 		log.info("method : " + methodObj);
 		
 		HttpSession session = request.getSession();
@@ -70,9 +70,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		HandlerMethod method = (HandlerMethod) handler;
 		Method methodObj = method.getMethod();
 		
-		// kr.or.ddit.controller.login.LoginController@312r
+		// kr.or.ddit.controller.intercept.login.LoginController@312r
 		log.info("Bean : " + method.getBean());
-		// public java.lang.String kr.or.ddit.controller.login.LoginController.loginForm()
+		// public java.lang.String kr.or.ddit.controller.intercept.login.LoginController.loginForm()
 		log.info("method : " + methodObj);
 		
 		HttpSession session = request.getSession();
@@ -103,9 +103,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		HandlerMethod method = (HandlerMethod) handler;
 		Method methodObj = method.getMethod();
 		
-		// kr.or.ddit.controller.login.LoginController@312r
+		// kr.or.ddit.controller.intercept.login.LoginController@312r
 		log.info("Bean : " + method.getBean());
-		// public java.lang.String kr.or.ddit.controller.login.LoginController.loginForm()
+		// public java.lang.String kr.or.ddit.controller.intercept.login.LoginController.loginForm()
 		log.info("method : " + methodObj);
 	}
 
