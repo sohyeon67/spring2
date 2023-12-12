@@ -6,6 +6,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- csrf meta 정보를 등록 -->
+<meta id="_csrf" name="_csrf" content="${_csrf.token }"/>
+<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName }"/>
 <title>AdminLTE 3 | Simple Tables</title>
 <link rel="stylesheet"
 	href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -14,6 +17,14 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/dist/css/adminlte.min.css">
 <script src="${pageContext.request.contextPath }/resources/plugins/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/resources/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+var token = "";
+var header = "";
+$(function() {
+	token = $("meta[name='_csrf']").attr("content");
+	header = $("meta[name='_csrf_header']").attr("content");
+});
+</script>
 </head>
 <c:if test="${not empty message }">
 <script type="text/javascript">

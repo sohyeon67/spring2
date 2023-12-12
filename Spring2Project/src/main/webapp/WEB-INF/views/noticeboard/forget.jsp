@@ -100,6 +100,9 @@ $(function(){
 			url: "/notice/findId.do",
 			data: JSON.stringify(data),
 			contentType: "application/json;charset=utf-8",
+			beforeSend : function(xhr) {	// 데이터 전송 전 헤더에 csrf값 설정
+				xhr.setRequestHeader(header, token);
+			},
 			success: function(res) {
 				$("#id").text(res);
 			}
@@ -135,6 +138,12 @@ $(function(){
 			url: "/notice/findPw.do",
 			data: JSON.stringify(data),
 			contentType: "application/json;charset=utf-8",
+			/* beforeSend : function(xhr) {	// 데이터 전송 전 헤더에 csrf값 설정
+				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+			}, */
+			beforeSend : function(xhr) {	// 데이터 전송 전 헤더에 csrf값 설정
+				xhr.setRequestHeader(header, token);
+			},
 			success: function(res) {
 				$("#password").text(res);
 			}

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ public class NoticeRetreiveController {
 	@Inject
 	private INoticeService noticeService;
 	
+	@PreAuthorize("hasAnyRole('ROLE_MEMBER', 'ROLE_ADMIN')")
 	@RequestMapping(value="/list.do")
 	public String noticeList(
 			@RequestParam(name="page", required = false, defaultValue = "1") int currentPage,
