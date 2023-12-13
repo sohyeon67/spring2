@@ -308,6 +308,8 @@ public class NoticeServiceImpl implements INoticeService {
 				profileImg = "/resources/profile/" + fileName;
 			}
 			memberVO.setMemProfileImg(profileImg);
+			
+			memberVO.setMemPw(pe.encode(memberVO.getMemPw()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -73,6 +73,12 @@ public class NoticeLoginController {
 		return goPage;
 	}
 	
+	@RequestMapping(value="/logout.do", method = RequestMethod.GET)
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/notice/login.do";
+	}
+	
 	@ResponseBody
 	@RequestMapping(value="/idCheck.do", method = RequestMethod.POST)
 	public ResponseEntity<ServiceResult> idCheck(@RequestBody Map<String, String> map) {	// 단일 데이터를 받을 때는 무조건 Map을 사용하자. 요청 본문 데이터를 받기 위해 어노테이션 붙임

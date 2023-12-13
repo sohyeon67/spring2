@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,6 +39,7 @@
 			<button type="submit" id="modifyBtn">Modify</button>
 			<button type="button" id="listBtn">List</button>
 		</div>
+		<sec:csrfInput/>
 	</form>
 </body>
 <script type="text/javascript">
@@ -69,6 +70,9 @@ $(function() {
 			data: formData,
 			processData: false,
 			contentType: false,
+			beforeSend : function(xhr) {	// 데이터 전송 전 헤더에 csrf값 설정
+				xhr.setRequestHeader("${_csrf.headerName}", "${_csrf.token}");
+			},
 			success: function(data) {
 				console.log(data);	// 넘어온 결과를 테스트로 출력
 				

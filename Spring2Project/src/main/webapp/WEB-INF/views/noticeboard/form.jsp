@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <section class="content-header">
 	<c:set value="등록" var="name"/>
 	<c:if test="${status eq 'u' }">
@@ -49,6 +50,7 @@
 							</div>
 						</div>
 					</div>
+					<sec:csrfInput/>
 				</form>
 				<c:if test="${status eq 'u' }">
 					<div class="card-footer bg-white">
@@ -96,7 +98,7 @@
 <script type="text/javascript">
 $(function() {
 	CKEDITOR.replace("boContent", {
-		filebrowserUploadUrl: '/imageUpload.do'
+		filebrowserUploadUrl: '/imageUpload.do?${_csrf.parameterName}=${_csrf.token}'
 	});
 	CKEDITOR.config.height = "500px";	// CKEDITOR 높이 설정
 	
