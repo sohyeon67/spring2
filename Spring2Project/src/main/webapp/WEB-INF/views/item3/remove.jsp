@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,6 +38,7 @@
 			<button type="submit" id="removeBtn">Remove</button>
 			<button type="button" id="listBtn">List</button>
 		</div>
+		<sec:csrfInput/>
 	</form>
 </body>
 <script type="text/javascript">
