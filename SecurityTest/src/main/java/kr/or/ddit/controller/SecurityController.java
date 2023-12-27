@@ -270,7 +270,7 @@ public class SecurityController {
 	 * 			# 스프링 시큐리티 설정(security-context.xml 설정)
 	 * 
 	 * 				- customPasswordEncoder 빈 등록 진행
-	 * 					<security:authentication-manage> 태그 설정
+	 * 					<security:authentication-manager> 태그 설정
 	 * 
 	 * 			# 비밀번호 암호화 처리기 클래스 정의
 	 * 				- 비밀번호 암호화 처리기
