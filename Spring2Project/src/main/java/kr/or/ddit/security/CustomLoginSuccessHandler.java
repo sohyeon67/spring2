@@ -17,9 +17,9 @@ import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
 
-public class CutomLoginSuccessHandler implements AuthenticationSuccessHandler {
+public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
-	private static final Logger log = LoggerFactory.getLogger(CutomLoginSuccessHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(CustomLoginSuccessHandler.class);
 	private RequestCache requestCache = new HttpSessionRequestCache();
 	
 	@Override

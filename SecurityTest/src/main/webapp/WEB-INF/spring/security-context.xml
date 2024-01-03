@@ -6,8 +6,8 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 		
 	<!-- 6. 사용자 정의 접근 거부 처리자 Bean 추가 -->
-	<bean id="customAccessDenied" class="kr.or.ddit.security.CutomAccessDeniedHandler"></bean>
-	<bean id="customLoginSuccess" class="kr.or.ddit.security.CutomLoginSuccessHandler"></bean>
+	<bean id="customAccessDenied" class="kr.or.ddit.security.CustomAccessDeniedHandler"></bean>
+	<bean id="customLoginSuccess" class="kr.or.ddit.security.CustomLoginSuccessHandler"></bean>
 	<!-- <bean id="customPasswordEncoder" class="kr.or.ddit.security.CustomNoOpPasswordEncoder"></bean> -->
 	<bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 	<bean id="CustomUserDetailsService" class="kr.or.ddit.security.CustomUserDetailsService"></bean>

@@ -11,9 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
-public class CutomAccessDeniedHandler implements AccessDeniedHandler {
+public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
-	private static final Logger log = LoggerFactory.getLogger(CutomAccessDeniedHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(CustomAccessDeniedHandler.class);
 	
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
