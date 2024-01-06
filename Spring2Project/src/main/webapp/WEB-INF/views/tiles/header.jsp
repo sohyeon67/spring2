@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%-- <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %> --%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
 	<ul class="navbar-nav">
 		<li class="nav-item">
@@ -18,7 +18,11 @@
 			<d iv class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
 			<a href="/notice/profile.do" class="dropdown-item dropdown-footer">마이페이지</a>
 			<div class="dropdown-divider"></div>
-			<a href="/notice/logout.do" class="dropdown-item dropdown-footer">로그아웃</a>
+			<form action="/logout" method="post">
+				<input type="submit" value="로그아웃" class="dropdown-item dropdown-footer"/>
+				<sec:csrfInput/>
+			</form>
+			<!-- <a href="/notice/logout.do" class="dropdown-item dropdown-footer">로그아웃</a> -->
 		</li>
 	</ul>
 </nav>
