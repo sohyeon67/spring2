@@ -51,7 +51,7 @@ public class NoticeProfileController {
 			goPage = "redirect:/notice/login.do";
 		}
 		
-		return "notice/profile";
+		return goPage;
 	}
 	
 	@RequestMapping(value="/profileUpdate.do", method = RequestMethod.POST)
